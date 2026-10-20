@@ -1,22 +1,39 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 import { Header } from "@/components/Header";
 import { ProjectInstrument } from "@/components/ProjectInstrument";
 import { ArtDecoFrame } from "@/components/ArtDecoFrame";
 import { ArtDecoGraphic } from "@/components/ArtDecoGraphic";
-import { ArrowRight, Download, ExternalLink, MapPin } from "lucide-react";
+import { ArrowRight, Download, ExternalLink, MapPin, ChevronRight, Check } from "lucide-react";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<string | null>(null);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("saad.lamkadam@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2400);
+  };
+
   return (
     <div className={styles.canvas}>
       <Header />
 
       <main className={styles.mainContainer}>
-        {/* EDITORIAL HERO SECTION: ASYMMETRIC GRID */}
+        {/* EDITORIAL HERO SECTION: GOLDEN RATIO ASYMMETRIC GRID (1.618 : 1) */}
         <section className={styles.heroSection}>
-          {/* Left Column: Clear Identity, Portrait & Positioning */}
-          <div className={styles.heroIntro}>
+          {/* Left Major Column: Identity & Positioning (φ Major) */}
+          <motion.div
+            className={styles.heroIntro}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <div className={styles.profileHeader}>
               <ArtDecoFrame className={styles.portraitFrame} label="ENGINEERING PROFILE">
                 <div className={styles.imageWrapper}>
@@ -53,25 +70,31 @@ export default function Home() {
             </p>
 
             <div className={styles.actionsCluster}>
-              <a href="#work" className={styles.primaryAction}>
+              <motion.a
+                href="#work"
+                className={styles.primaryAction}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <span>View selected work</span>
-                <ArrowRight size={15} />
-              </a>
+                <ArrowRight size={14} />
+              </motion.a>
 
-              <a
+              <motion.a
                 href="/Saad_Lamkadam_Europass_CV.pdf"
                 download="Saad_Lamkadam_Europass_CV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.secondaryLink}
+                whileHover={{ x: 2 }}
               >
                 <span>Download CV (PDF)</span>
-                <Download size={14} />
-              </a>
+                <Download size={13} />
+              </motion.a>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Physical Tactile Instrument Panel (Proof of Work) */}
+          {/* Right Minor Column: Physical Tactile Instrument Panel (φ Minor) */}
           <div className={styles.heroConsoleWrapper}>
             <div className={styles.consoleHeaderRule}>
               <span className={styles.consoleLabel}>FEATURED SYSTEM SPECIFICATION</span>
@@ -84,7 +107,7 @@ export default function Home() {
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
         <ArtDecoGraphic type="chevron" />
 
-        {/* SELECTED WORK SECTION */}
+        {/* 01 / SELECTED WORK SECTION */}
         <section id="work" className={styles.sectionBlock}>
           <div className={styles.sectionHeadingRow}>
             <div className={styles.sectionIndex}>01 / SYSTEMS</div>
@@ -93,7 +116,11 @@ export default function Home() {
 
           <div className={styles.workList}>
             {/* Project Item 1 */}
-            <article className={styles.workRow}>
+            <motion.article
+              className={styles.workRow}
+              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
+              transition={{ duration: 0.2 }}
+            >
               <div className={styles.workMeta}>
                 <span className={styles.workYear}>2024 — PRESENT</span>
                 <span className={styles.workCategory}>Algorithmic Trading & Risk</span>
@@ -120,13 +147,17 @@ export default function Home() {
                   className={styles.rowLink}
                 >
                   <span>Repository</span>
-                  <ExternalLink size={13} />
+                  <ExternalLink size={12} />
                 </a>
               </div>
-            </article>
+            </motion.article>
 
             {/* Project Item 2 */}
-            <article className={styles.workRow}>
+            <motion.article
+              className={styles.workRow}
+              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
+              transition={{ duration: 0.2 }}
+            >
               <div className={styles.workMeta}>
                 <span className={styles.workYear}>2023 — 2025</span>
                 <span className={styles.workCategory}>IoT Telemetry & Energy</span>
@@ -147,10 +178,14 @@ export default function Home() {
               <div className={styles.workLink}>
                 <span className={styles.deployedClient}>Sens Innovation Ltd</span>
               </div>
-            </article>
+            </motion.article>
 
             {/* Project Item 3 */}
-            <article className={styles.workRow}>
+            <motion.article
+              className={styles.workRow}
+              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
+              transition={{ duration: 0.2 }}
+            >
               <div className={styles.workMeta}>
                 <span className={styles.workYear}>2024</span>
                 <span className={styles.workCategory}>Distributed Scraping</span>
@@ -176,17 +211,17 @@ export default function Home() {
                   className={styles.rowLink}
                 >
                   <span>Platform</span>
-                  <ExternalLink size={13} />
+                  <ExternalLink size={12} />
                 </a>
               </div>
-            </article>
+            </motion.article>
           </div>
         </section>
 
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
         <ArtDecoGraphic type="chevron" />
 
-        {/* CAREER HISTORY SECTION */}
+        {/* 02 / CAREER HISTORY SECTION */}
         <section id="experience" className={styles.sectionBlock}>
           <div className={styles.sectionHeadingRow}>
             <div className={styles.sectionIndex}>02 / EXPERIENCE</div>
@@ -249,7 +284,7 @@ export default function Home() {
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
         <ArtDecoGraphic type="chevron" />
 
-        {/* CREDENTIALS SECTION */}
+        {/* 03 / CREDENTIALS SECTION */}
         <section id="credentials" className={styles.sectionBlock}>
           <div className={styles.sectionHeadingRow}>
             <div className={styles.sectionIndex}>03 / CREDENTIALS</div>
@@ -314,7 +349,7 @@ export default function Home() {
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
         <ArtDecoGraphic type="chevron" />
 
-        {/* CONTACT SECTION */}
+        {/* 04 / CONTACT SECTION */}
         <section id="contact" className={styles.sectionBlock}>
           <div className={styles.sectionHeadingRow}>
             <div className={styles.sectionIndex}>04 / CONTACT</div>
@@ -327,14 +362,25 @@ export default function Home() {
                 For software engineering roles, system architecture advisory, or enterprise consultations:
               </p>
               <div className={styles.contactLinks}>
-                <a href="mailto:saad.lamkadam@gmail.com" className={styles.contactActionLink}>
-                  saad.lamkadam@gmail.com
-                </a>
+                <motion.button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className={styles.emailPillButton}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>saad.lamkadam@gmail.com</span>
+                  {copiedEmail ? <Check size={13} className={styles.checkIcon} /> : <span className={styles.copyHint}>Copy</span>}
+                </motion.button>
+
                 <span className={styles.contactSep}>/</span>
+
                 <a href="tel:+35699971955" className={styles.contactActionLink}>
                   (+356) 99971955
                 </a>
+
                 <span className={styles.contactSep}>/</span>
+
                 <a
                   href="https://github.com/saad-lamkadam"
                   target="_blank"
@@ -343,7 +389,9 @@ export default function Home() {
                 >
                   GitHub
                 </a>
+
                 <span className={styles.contactSep}>/</span>
+
                 <a
                   href="https://credly.com/users/saad-lamkadam"
                   target="_blank"

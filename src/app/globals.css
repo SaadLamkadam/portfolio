@@ -1,56 +1,62 @@
-/* Editorial Design Tokens: Warm Ivory Canvas + Selective Matte Console */
+/* Advanced Design System: Golden Ratio (φ = 1.618) & Adobe Typographic Harmony */
 :root {
-  /* Directional Lighting */
-  --light-dir: 135deg;
+  /* The Golden Ratio: φ = 1.618 */
+  --phi: 1.618;
 
-  /* Canvas: Warm Editorial Ivory & Inks */
-  --canvas-bg: #f9f8f5;
-  --canvas-surface: #ffffff;
-  --canvas-surface-subtle: #f2eee9;
-  --canvas-border: #e6e0d6;
-  --canvas-border-strong: #d2c8b8;
+  /* Typographic Modular Scale based on Golden Ratio & Major Third (1.25) */
+  --font-base: 1rem;                      /* 16px */
+  --font-xs: calc(var(--font-base) / 1.333);   /* 12px / micro metadata */
+  --font-sm: calc(var(--font-base) / 1.15);    /* 14px / supporting captions */
+  --font-md: var(--font-base);                 /* 16px / primary body text */
+  --font-lg: calc(var(--font-base) * 1.25);    /* 20px / subheadings */
+  --font-xl: calc(var(--font-base) * 1.618);   /* 26px / section headings */
+  --font-2xl: calc(var(--font-xl) * 1.25);     /* 32px / editorial titles */
+  --font-3xl: calc(var(--font-xl) * 1.618);    /* 42px / display hero */
 
-  /* Typography Colors */
-  --ink-primary: #121316;
-  --ink-secondary: #4a4f59;
-  --ink-muted: #767d8a;
-  --ink-faint: #a0a6b2;
+  /* Golden Ratio Spatial System (Harmonic Margins & Padding) */
+  --space-1: 0.382rem;   /* φ^-2 */
+  --space-2: 0.618rem;   /* φ^-1 */
+  --space-3: 1rem;       /* 1.0 */
+  --space-4: 1.618rem;   /* φ^1 */
+  --space-5: 2.618rem;   /* φ^2 */
+  --space-6: 4.236rem;   /* φ^3 */
+  --space-7: 6.854rem;   /* φ^4 */
 
-  /* Restrained Metallic Brass Accent (Used Sparingly) */
-  --brass-accent: #b38b38;
-  --brass-muted: #cbb47f;
-  --brass-faint: rgba(179, 139, 56, 0.12);
-  --brass-line: #d8c396;
+  /* Canvas: Warm Editorial Parchment + Deep Ink */
+  --bg-canvas: #f9f8f5;
+  --bg-surface: #ffffff;
+  --bg-inset: #f2eee8;
+  
+  --ink-primary: #121417;
+  --ink-secondary: #40454f;
+  --ink-muted: #6e7582;
+  --ink-faint: #9ea5b2;
 
-  /* Tactile Console Colors (Physical Instrument) */
-  --console-frame: #1b1e23;
-  --console-chassis: #121417;
-  --console-bezel: #242930;
-  --console-screen-inset: #0a0b0d;
-  --console-border: rgba(255, 255, 255, 0.08);
+  /* High Art Deco Restrained Brass */
+  --brass-dark: #6e541b;
+  --brass-primary: #a8812c;
+  --brass-light: #d6af59;
+  --brass-border: rgba(168, 129, 44, 0.28);
+  --brass-glow: rgba(168, 129, 44, 0.12);
+
+  /* Subtle Architectural Borders */
+  --border-subtle: #e6e0d4;
+  --border-strong: #d0c7b7;
+
+  /* Console Instrument Colors */
+  --console-frame: #181b20;
+  --console-chassis: #101215;
+  --console-bezel: #22262d;
+  --console-screen-inset: #090a0c;
   --console-text-bright: #f0f3f6;
-  --console-text-dim: #8b949e;
-  --console-accent: #58a6ff;
+  --console-text-dim: #88929d;
   --console-led-green: #3fb950;
   --console-led-amber: #d29922;
 
-  /* Skeuomorphic Console Depth & Inset */
-  --shadow-console-instrument:
-    0 1px 0 rgba(255, 255, 255, 0.08) inset,
-    0 -1px 0 rgba(0, 0, 0, 0.8) inset,
-    0 24px 48px -12px rgba(18, 19, 22, 0.35),
-    0 1px 3px rgba(18, 19, 22, 0.1);
+  --shadow-console: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 -1px 0 rgba(0, 0, 0, 0.8) inset, 0 20px 45px rgba(18, 20, 23, 0.25);
+  --shadow-recessed: inset 0 3px 6px rgba(0, 0, 0, 0.9), inset 0 -1px 1px rgba(255, 255, 255, 0.04);
 
-  --shadow-recessed-display:
-    inset 0 3px 6px rgba(0, 0, 0, 0.9),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.04),
-    0 1px 0 rgba(255, 255, 255, 0.06);
-
-  --shadow-tactile-tab-active:
-    inset 0 2px 4px rgba(0, 0, 0, 0.7),
-    0 1px 0 rgba(255, 255, 255, 0.06);
-
-  --max-width: 1240px;
+  --max-width: 1220px;
 }
 
 * {
@@ -59,26 +65,48 @@
   margin: 0;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: var(--canvas-bg);
+  background-color: var(--bg-canvas);
   color: var(--ink-primary);
   font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--font-md);
+  line-height: 1.618; /* Golden Ratio line height for optimal readability */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Crisp Editorial Lines */
-hr.editorial-rule {
-  border: none;
-  height: 1px;
-  background: var(--canvas-border);
-  margin: 2.5rem 0;
+/* Subtle Art Deco architectural watermark texture */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.02;
+  background-image: repeating-linear-gradient(
+    60deg,
+    var(--ink-primary),
+    var(--ink-primary) 1px,
+    transparent 1px,
+    transparent 48px
+  );
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button {
+  font-family: inherit;
 }
