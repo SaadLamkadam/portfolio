@@ -125,9 +125,50 @@ img {
   display: block;
 }
 
+/* Brass focus ring for keyboard users (knob, tabs, dossiers, links) */
 :focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 3px;
+  outline: 2px solid var(--brass-light);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ink);
+}
+
+/* Print: ink on white, no instruments' enamel, no etched texture */
+@media print {
+  html,
+  body,
+  section,
+  [data-ui] {
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  body::before,
+  header,
+  [role="tablist"],
+  [role="radiogroup"],
+  svg[aria-hidden="true"],
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+  * {
+    color: #000 !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-ui],
+  article,
+  li {
+    break-inside: avoid;
+    clip-path: none !important;
+    border: 1px solid #999 !important;
+  }
+  a[href^="http"]::after,
+  a[href^="mailto"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+  }
 }
 
 ::selection {

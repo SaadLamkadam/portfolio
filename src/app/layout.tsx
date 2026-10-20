@@ -24,10 +24,26 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+const TITLE = "Saad Lamkadam — Software & AI Systems Engineer";
+const DESCRIPTION =
+  "Saad (Jake) Lamkadam, software and AI systems engineer in Gżira, Malta: 7+ years of IoT telemetry pipelines, government automation for the Office of the Prime Minister, and a 24/7 algorithmic trading engine.";
+
 export const metadata: Metadata = {
-  title: "Saad Lamkadam — Software & AI Systems Engineer",
-  description:
-    "Saad (Jake) Lamkadam, software and AI systems engineer in Gżira, Malta: 7+ years of IoT telemetry pipelines, government automation for the Office of the Prime Minister, and a 24/7 algorithmic trading engine.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://saadlamkadam-portfolio.up.railway.app"),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    type: "profile",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/saad_lamkadam_portrait.png", width: 800, height: 800, alt: "Portrait of Saad Lamkadam" }],
+  },
+  twitter: {
+    card: "summary",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/saad_lamkadam_portrait.png"],
+  },
 };
 
 export default function RootLayout({
