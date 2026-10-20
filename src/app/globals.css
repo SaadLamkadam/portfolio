@@ -1,61 +1,56 @@
-/* Art Deco & Skeuomorphic Design Tokens */
+/* Editorial Design Tokens: Warm Ivory Canvas + Selective Matte Console */
 :root {
-  /* Directional Lighting (Top-Left 45deg) */
-  --light-angle: 135deg;
-  
-  /* Charcoal Lacquer Palette */
-  --bg-deep: #08090b;
-  --bg-lacquer: #0e1115;
-  --bg-lacquer-elevated: #14181f;
-  --bg-panel: #161b22;
-  --bg-panel-inset: #0b0d10;
+  /* Directional Lighting */
+  --light-dir: 135deg;
 
-  /* Brass & Gold Metal Tones */
-  --brass-highlight: #f8df9e;
-  --brass-primary: #d4af37;
-  --brass-muted: #aa8628;
-  --brass-dark: #634f19;
-  --brass-shadow: rgba(0, 0, 0, 0.85);
-
-  /* Bronze / Accent Tones */
-  --bronze-glow: rgba(212, 175, 55, 0.18);
-  --bronze-border: rgba(212, 175, 55, 0.35);
-  --bronze-border-strong: rgba(212, 175, 55, 0.65);
+  /* Canvas: Warm Editorial Ivory & Inks */
+  --canvas-bg: #f9f8f5;
+  --canvas-surface: #ffffff;
+  --canvas-surface-subtle: #f2eee9;
+  --canvas-border: #e6e0d6;
+  --canvas-border-strong: #d2c8b8;
 
   /* Typography Colors */
-  --text-pure: #ffffff;
-  --text-ivory: #f2ede4;
-  --text-muted: #9aa2ae;
-  --text-subtle: #687180;
-  --text-gold: #e2ba49;
+  --ink-primary: #121316;
+  --ink-secondary: #4a4f59;
+  --ink-muted: #767d8a;
+  --ink-faint: #a0a6b2;
 
-  /* Skeuomorphic Shadows & Inset Depth */
-  --shadow-bevel-outer: 
+  /* Restrained Metallic Brass Accent (Used Sparingly) */
+  --brass-accent: #b38b38;
+  --brass-muted: #cbb47f;
+  --brass-faint: rgba(179, 139, 56, 0.12);
+  --brass-line: #d8c396;
+
+  /* Tactile Console Colors (Physical Instrument) */
+  --console-frame: #1b1e23;
+  --console-chassis: #121417;
+  --console-bezel: #242930;
+  --console-screen-inset: #0a0b0d;
+  --console-border: rgba(255, 255, 255, 0.08);
+  --console-text-bright: #f0f3f6;
+  --console-text-dim: #8b949e;
+  --console-accent: #58a6ff;
+  --console-led-green: #3fb950;
+  --console-led-amber: #d29922;
+
+  /* Skeuomorphic Console Depth & Inset */
+  --shadow-console-instrument:
     0 1px 0 rgba(255, 255, 255, 0.08) inset,
     0 -1px 0 rgba(0, 0, 0, 0.8) inset,
-    0 10px 30px rgba(0, 0, 0, 0.7);
-    
-  --shadow-panel-raised: 
-    0 1px 1px rgba(255, 255, 255, 0.12) inset,
-    0 -1px 2px rgba(0, 0, 0, 0.9) inset,
-    0 12px 28px -4px rgba(0, 0, 0, 0.85),
-    0 0 1px 1px rgba(212, 175, 55, 0.25);
+    0 24px 48px -12px rgba(18, 19, 22, 0.35),
+    0 1px 3px rgba(18, 19, 22, 0.1);
 
-  --shadow-inset-groove:
-    inset 0 2px 4px rgba(0, 0, 0, 0.9),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.05),
-    0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-recessed-display:
+    inset 0 3px 6px rgba(0, 0, 0, 0.9),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.04),
+    0 1px 0 rgba(255, 255, 255, 0.06);
 
-  --shadow-button-press:
-    inset 0 3px 6px rgba(0, 0, 0, 0.95),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.8),
-    0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-tactile-tab-active:
+    inset 0 2px 4px rgba(0, 0, 0, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.06);
 
-  /* Geometry & Grid */
-  --max-width: 1200px;
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
+  --max-width: 1240px;
 }
 
 * {
@@ -68,63 +63,19 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: var(--bg-deep);
-  color: var(--text-ivory);
+  background-color: var(--canvas-bg);
+  color: var(--ink-primary);
   font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Subtle Art Deco background geometric watermark grid */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.025;
-  background-image: 
-    linear-gradient(45deg, #d4af37 25%, transparent 25%), 
-    linear-gradient(-45deg, #d4af37 25%, transparent 25%), 
-    linear-gradient(135deg, #d4af37 25%, transparent 25%), 
-    linear-gradient(-135deg, #d4af37 25%, transparent 25%);
-  background-size: 40px 40px;
-  background-position: 0 0, 20px 0, 20px -20px, 0px 20px;
-}
-
-/* Art Deco Stepped Corner Utility */
-.stepped-panel {
-  position: relative;
-  border: 1px solid var(--bronze-border);
-  background: linear-gradient(145deg, var(--bg-lacquer-elevated), var(--bg-lacquer));
-  box-shadow: var(--shadow-panel-raised);
-}
-
-/* Fine Gold Hairline */
-.gold-hairline {
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--brass-primary) 50%, transparent 100%);
+/* Crisp Editorial Lines */
+hr.editorial-rule {
   border: none;
-  margin: 1.5rem 0;
-}
-
-/* Scrollbar customization */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-deep);
-}
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--brass-muted), var(--brass-dark));
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--brass-primary);
+  height: 1px;
+  background: var(--canvas-border);
+  margin: 2.5rem 0;
 }
 
 a {

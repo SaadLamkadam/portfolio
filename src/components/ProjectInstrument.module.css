@@ -1,0 +1,360 @@
+.chassis {
+  position: relative;
+  background: var(--console-frame);
+  border: 1px solid var(--console-bezel);
+  border-radius: 8px;
+  box-shadow: var(--shadow-console-instrument);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+/* TOP BEZEL */
+.topBezel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chassisBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.screwHead {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #555, #222);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.instrumentId {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--console-text-dim);
+  font-weight: 500;
+}
+
+.statusCluster {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.ledIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ledDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.ledGreen {
+  background: var(--console-led-green);
+  box-shadow: 0 0 6px var(--console-led-green);
+}
+
+.ledAmber {
+  background: var(--console-led-amber);
+  box-shadow: 0 0 6px var(--console-led-amber);
+}
+
+.ledOff {
+  background: #333;
+}
+
+.ledLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--console-text-dim);
+}
+
+/* TACTILE TABS */
+.tabsRack {
+  display: flex;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 3px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.tactileTab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.6rem;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: var(--console-text-dim);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tactileTab:hover {
+  color: var(--console-text-bright);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tabActive {
+  background: var(--console-bezel);
+  color: var(--console-text-bright);
+  box-shadow: var(--shadow-tactile-tab-active);
+  font-weight: 600;
+}
+
+.tabIcon {
+  color: var(--brass-accent);
+}
+
+/* RECESSED DISPLAY */
+.recessedScreen {
+  position: relative;
+  background: var(--console-screen-inset);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 5px;
+  box-shadow: var(--shadow-recessed-display);
+  padding: 1.25rem;
+  min-height: 220px;
+  overflow: hidden;
+}
+
+.screenScanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.4;
+}
+
+.screenContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.projectHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.specLabel {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--brass-accent);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.screenTitle {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--console-text-bright);
+}
+
+.environmentTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  color: var(--console-text-dim);
+  white-space: nowrap;
+}
+
+.screenDescription {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #a0aec0;
+}
+
+.screenDescriptionSmall {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #a0aec0;
+}
+
+.specMetricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.specBlock {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.5rem;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.specKey {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--console-text-dim);
+}
+
+.specValue {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--console-text-bright);
+}
+
+/* TOPOLOGY DIAGRAM */
+.topologyDiagram {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.35rem 0;
+}
+
+.topoNode {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: var(--console-text-bright);
+  white-space: nowrap;
+}
+
+.topoGate {
+  border-color: var(--brass-accent);
+  color: var(--brass-accent);
+}
+
+.topoArrow {
+  color: var(--console-text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.terminalSnippet {
+  background: #060708;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 3px;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.termComment {
+  color: #555;
+}
+
+.termLine {
+  color: #38a169;
+}
+
+/* STACK PILLS */
+.stackPillsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.stackPill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  color: var(--console-text-bright);
+}
+
+/* BOTTOM BEZEL */
+.bottomBezel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bottomMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.metaLabel {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  color: var(--console-text-dim);
+}
+
+.metaValue {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--console-led-green);
+  letter-spacing: 0.06em;
+}
+
+.tactileConsoleLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  color: var(--console-text-bright);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.tactileConsoleLink:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--brass-accent);
+  color: #fff;
+}

@@ -1,0 +1,85 @@
+.header {
+  position: sticky;
+  top: 0;
+  background: rgba(249, 248, 245, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--canvas-border);
+  z-index: 50;
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.15rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.92rem;
+}
+
+.name {
+  font-weight: 700;
+  color: var(--ink-primary);
+  letter-spacing: -0.01em;
+}
+
+.divider {
+  color: var(--brass-accent);
+  font-weight: 300;
+}
+
+.role {
+  color: var(--ink-secondary);
+  font-weight: 400;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.navLink {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  transition: color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--ink-primary);
+}
+
+.githubLink {
+  color: var(--ink-muted);
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s ease;
+  margin-left: 0.5rem;
+}
+
+.githubLink:hover {
+  color: var(--ink-primary);
+}
+
+@media (max-width: 680px) {
+  .inner {
+    padding: 1rem 1.25rem;
+  }
+  .role {
+    display: none;
+  }
+  .divider {
+    display: none;
+  }
+  .nav {
+    gap: 1rem;
+  }
+}
