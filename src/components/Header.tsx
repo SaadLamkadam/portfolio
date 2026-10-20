@@ -1,4 +1,5 @@
 import React from "react";
+import { ArtDecoGraphic } from "./ArtDecoGraphic";
 import { GithubIcon } from "./GithubIcon";
 import styles from "./Header.module.css";
 
@@ -7,9 +8,11 @@ export const Header: React.FC = () => {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.identity}>
-          <span className={styles.name}>Saad Lamkadam</span>
-          <span className={styles.divider}>/</span>
-          <span className={styles.role}>Software & AI Systems Engineer</span>
+          <ArtDecoGraphic type="crest" className={styles.navCrest} />
+          <div className={styles.nameBlock}>
+            <span className={styles.name}>Saad Lamkadam</span>
+            <span className={styles.role}>Software & AI Systems Engineer</span>
+          </div>
         </div>
 
         <nav className={styles.nav}>

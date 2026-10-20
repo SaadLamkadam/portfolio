@@ -1,0 +1,93 @@
+.frameOuter {
+  position: relative;
+  background: var(--canvas-surface);
+  border: 1px solid var(--canvas-border-strong);
+  padding: 6px;
+  box-shadow: 
+    0 4px 20px -4px rgba(18, 19, 22, 0.08),
+    0 1px 2px rgba(18, 19, 22, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.frameOuter:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 28px -6px rgba(18, 19, 22, 0.12),
+    0 0 0 1px var(--brass-accent);
+}
+
+.innerBezel {
+  position: relative;
+  border: 1px solid var(--canvas-border);
+  padding: 0.5rem;
+  background: var(--canvas-bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stepped Art Deco Corners */
+.cornerStep {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tl {
+  top: 2px;
+  left: 2px;
+  border-top: 2px solid var(--brass-accent);
+  border-left: 2px solid var(--brass-accent);
+}
+
+.tr {
+  top: 2px;
+  right: 2px;
+  border-top: 2px solid var(--brass-accent);
+  border-right: 2px solid var(--brass-accent);
+}
+
+.bl {
+  bottom: 2px;
+  left: 2px;
+  border-bottom: 2px solid var(--brass-accent);
+  border-left: 2px solid var(--brass-accent);
+}
+
+.br {
+  bottom: 2px;
+  right: 2px;
+  border-bottom: 2px solid var(--brass-accent);
+  border-right: 2px solid var(--brass-accent);
+}
+
+.frameHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.headerLine {
+  flex: 1;
+  height: 1px;
+  background: var(--canvas-border);
+}
+
+.frameLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--brass-accent);
+  text-transform: uppercase;
+}
+
+.frameContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}

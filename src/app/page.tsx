@@ -1,6 +1,9 @@
 import React from "react";
+import Image from "next/image";
 import { Header } from "@/components/Header";
 import { ProjectInstrument } from "@/components/ProjectInstrument";
+import { ArtDecoFrame } from "@/components/ArtDecoFrame";
+import { ArtDecoGraphic } from "@/components/ArtDecoGraphic";
 import { ArrowRight, Download, ExternalLink, MapPin } from "lucide-react";
 import styles from "./page.module.css";
 
@@ -12,11 +15,32 @@ export default function Home() {
       <main className={styles.mainContainer}>
         {/* EDITORIAL HERO SECTION: ASYMMETRIC GRID */}
         <section className={styles.heroSection}>
-          {/* Left Column: Clear Identity, Positioning & Action */}
+          {/* Left Column: Clear Identity, Portrait & Positioning */}
           <div className={styles.heroIntro}>
-            <div className={styles.locationTag}>
-              <MapPin size={12} className={styles.pinIcon} />
-              <span>Gzira, Malta · Available for Senior Engineering Roles</span>
+            <div className={styles.profileHeader}>
+              <ArtDecoFrame className={styles.portraitFrame} label="ENGINEERING PROFILE">
+                <div className={styles.imageWrapper}>
+                  <Image
+                    src="/saad_lamkadam_portrait.png"
+                    alt="Saad (Jake) Lamkadam"
+                    width={110}
+                    height={110}
+                    priority
+                    className={styles.portraitImg}
+                  />
+                </div>
+              </ArtDecoFrame>
+
+              <div className={styles.profileBioBlock}>
+                <div className={styles.locationTag}>
+                  <MapPin size={12} className={styles.pinIcon} />
+                  <span>Gzira, Malta · Senior Engineer</span>
+                </div>
+                <div className={styles.provenanceNote}>
+                  <span className={styles.provDot} />
+                  <span>EU Family Member · Unrestricted EU/EEA Work Rights</span>
+                </div>
+              </div>
             </div>
 
             <h1 className={styles.heroHeadline}>
@@ -45,11 +69,6 @@ export default function Home() {
                 <Download size={14} />
               </a>
             </div>
-
-            <div className={styles.provenanceNote}>
-              <span className={styles.provDot} />
-              <span>EU Family Member · Unrestricted EU/EEA Work Authorization</span>
-            </div>
           </div>
 
           {/* Right Column: Physical Tactile Instrument Panel (Proof of Work) */}
@@ -63,11 +82,7 @@ export default function Home() {
         </section>
 
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <div className={styles.sectionDivider}>
-          <div className={styles.stepDecoLeft} />
-          <div className={styles.stepCenterDiamond} />
-          <div className={styles.stepDecoRight} />
-        </div>
+        <ArtDecoGraphic type="chevron" />
 
         {/* SELECTED WORK SECTION */}
         <section id="work" className={styles.sectionBlock}>
@@ -169,11 +184,7 @@ export default function Home() {
         </section>
 
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <div className={styles.sectionDivider}>
-          <div className={styles.stepDecoLeft} />
-          <div className={styles.stepCenterDiamond} />
-          <div className={styles.stepDecoRight} />
-        </div>
+        <ArtDecoGraphic type="chevron" />
 
         {/* CAREER HISTORY SECTION */}
         <section id="experience" className={styles.sectionBlock}>
@@ -236,11 +247,7 @@ export default function Home() {
         </section>
 
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <div className={styles.sectionDivider}>
-          <div className={styles.stepDecoLeft} />
-          <div className={styles.stepCenterDiamond} />
-          <div className={styles.stepDecoRight} />
-        </div>
+        <ArtDecoGraphic type="chevron" />
 
         {/* CREDENTIALS SECTION */}
         <section id="credentials" className={styles.sectionBlock}>
@@ -305,11 +312,7 @@ export default function Home() {
         </section>
 
         {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <div className={styles.sectionDivider}>
-          <div className={styles.stepDecoLeft} />
-          <div className={styles.stepCenterDiamond} />
-          <div className={styles.stepDecoRight} />
-        </div>
+        <ArtDecoGraphic type="chevron" />
 
         {/* CONTACT SECTION */}
         <section id="contact" className={styles.sectionBlock}>

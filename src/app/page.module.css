@@ -28,13 +28,46 @@
   gap: 1.25rem;
 }
 
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.portraitFrame {
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--canvas-surface-subtle);
+}
+
+.portraitImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profileBioBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
 .locationTag {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--ink-secondary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-primary);
 }
 
 .pinIcon {
