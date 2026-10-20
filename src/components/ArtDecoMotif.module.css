@@ -1,0 +1,66 @@
+.crestContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 72px;
+  height: 72px;
+}
+
+.crestSvg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
+}
+
+.sunburstContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.sunburstSvg {
+  width: 100%;
+  height: auto;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 2.5rem auto;
+  gap: 1rem;
+}
+
+.lineLeft,
+.lineRight {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass-primary));
+}
+
+.lineRight {
+  background: linear-gradient(90deg, var(--brass-primary), transparent);
+}
+
+.steppedDiamond {
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  border: 1px solid var(--brass-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+}
+
+.diamondInner {
+  width: 6px;
+  height: 6px;
+  background: var(--brass-highlight);
+}
