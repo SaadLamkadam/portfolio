@@ -1,305 +1,200 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Activity, GitBranch, Cpu, ExternalLink, Terminal, ShieldAlert } from "lucide-react";
-import { GithubIcon } from "./GithubIcon";
+import { Falcon } from "./Falcon";
+import { Schematic } from "./Schematic";
 import styles from "./ProjectInstrument.module.css";
 
-type TabKey = "overview" | "architecture" | "telemetry" | "simulator";
+type SystemKey = "clawquant" | "reach";
+type TabKey = "overview" | "schematic" | "extra";
+
+const SPRING = { type: "spring", stiffness: 450, damping: 28 } as const;
+const FADE = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
+const TRIP_MS = 3200;
+
+// Only facts already stated on the page; the risk test is labelled as a browser simulation.
+const SYSTEMS = {
+  clawquant: {
+    name: "ClawQuant",
+    id: "clawquant · prod",
+    title: "Autonomous execution on Bybit perpetuals",
+    specs: [
+      ["signal loop", "< 150 ms"],
+      ["execution", "maker-only"],
+      ["risk exit", "conformal gate"],
+    ],
+    schematic: { title: "ClawQuant order path", nodes: ["Tick stream", "Signal eval", "Risk gate", "Order router"], gate: 2 },
+    extraTab: "Risk test",
+  },
+  reach: {
+    name: "REACH IoT",
+    id: "reach · hotels",
+    title: "Energy telemetry across hotel sites, 24/7",
+    specs: [
+      ["manual work", "−75%"],
+      ["uptime", "+28%"],
+      ["compliance", "GDPR"],
+    ],
+    schematic: { title: "REACH telemetry path", nodes: ["Sensors", "Stream proc.", "ASP.NET API", "SQL Server", "Alerts"] },
+    extraTab: "Stack",
+  },
+} as const;
 
 export const ProjectInstrument: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabKey>("overview");
-  const [isPowerOn, setIsPowerOn] = useState(true);
-  const [simRiskStatus, setSimRiskStatus] = useState<"NORMAL" | "TRIGGERED">("NORMAL");
-  const [latencyValue, setLatencyValue] = useState(142);
+  const [system, setSystem] = useState<SystemKey>("clawquant");
+  const [tab, setTab] = useState<TabKey>("overview");
+  const [tripped, setTripped] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+  const s = SYSTEMS[system];
 
-  const handleSimulateVolatility = () => {
-    setSimRiskStatus("TRIGGERED");
-    setLatencyValue(88);
-    setTimeout(() => {
-      setSimRiskStatus("NORMAL");
-      setLatencyValue(142);
-    }, 3200);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const selectSystem = (next: SystemKey) => {
+    setSystem(next);
+    setTab("overview");
+    setTripped(false);
+  };
+
+  const tripBreaker = () => {
+    setTripped(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setTripped(false), TRIP_MS);
   };
 
   return (
-    <motion.div
-      className={styles.chassis}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      {/* Top Bevel & Instrument Label */}
-      <div className={styles.topBezel}>
-        <div className={styles.chassisBrand}>
-          <div className={styles.screwHead} />
-          <span className={styles.instrumentId}>INSTRUMENT UNIT · CLAWQUANT-01</span>
-          <div className={styles.screwHead} />
-        </div>
+    <div className={`${styles.chassis} ${tripped ? styles.isTripped : ""}`} data-ui>
+      <span className={`${styles.rivet} ${styles.rTl}`} aria-hidden="true" />
+      <span className={`${styles.rivet} ${styles.rTr}`} aria-hidden="true" />
+      <span className={`${styles.rivet} ${styles.rBl}`} aria-hidden="true" />
+      <span className={`${styles.rivet} ${styles.rBr}`} aria-hidden="true" />
 
-        <div className={styles.statusCluster}>
-          <motion.div
-            className={styles.ledIndicator}
-            animate={{ opacity: [0.75, 1, 0.75] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      <div className={styles.topBar}>
+        <div className={styles.identity}>
+          <span className={styles.instrumentId}>{s.id}</span>
+          <span className={styles.status}>
+            <span className={`${styles.led} ${tripped ? styles.ledRed : styles.ledGreen}`} aria-hidden="true" />
+            {tripped ? "breaker tripped · orders blocked" : "runtime 24/7"}
+          </span>
+        </div>
+        <Falcon className={styles.crest} state={tripped ? "tripped" : "nominal"} />
+      </div>
+
+      {/* Rotary selector: the knob turns between the two systems */}
+      <div className={styles.selector} role="radiogroup" aria-label="Choose the system shown">
+        <button
+          type="button"
+          role="radio"
+          aria-checked={system === "clawquant"}
+          className={styles.position}
+          onClick={() => selectSystem("clawquant")}
+        >
+          ClawQuant
+        </button>
+        <motion.button
+          type="button"
+          className={styles.knob}
+          aria-label={`Turn to ${system === "clawquant" ? "REACH IoT" : "ClawQuant"}`}
+          onClick={() => selectSystem(system === "clawquant" ? "reach" : "clawquant")}
+          animate={{ rotate: system === "clawquant" ? -50 : 50 }}
+          transition={SPRING}
+        >
+          <span className={styles.pointer} />
+        </motion.button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={system === "reach"}
+          className={styles.position}
+          onClick={() => selectSystem("reach")}
+        >
+          REACH IoT
+        </button>
+      </div>
+
+      <div className={styles.tabsRack} role="tablist" aria-label={`${s.name} details`}>
+        {(["overview", "schematic", "extra"] as TabKey[]).map((t) => (
+          <button
+            key={t}
+            type="button"
+            role="tab"
+            aria-selected={tab === t}
+            onClick={() => setTab(t)}
+            className={`${styles.tab} ${tab === t ? styles.tabActive : ""}`}
           >
-            <span
-              className={`${styles.ledDot} ${isPowerOn ? styles.ledGreen : styles.ledOff}`}
-            />
-            <span className={styles.ledLabel}>RUNTIME: 24/7 ACTIVE</span>
+            {t === "overview" ? "Overview" : t === "schematic" ? "Schematic" : s.extraTab}
+          </button>
+        ))}
+      </div>
+
+      <div className={styles.screen} role="tabpanel">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={`${system}-${tab}`}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={FADE}
+            className={styles.screenContent}
+          >
+            {tab === "overview" && (
+              <>
+                <p className={styles.screenTitle}>{s.title}</p>
+                <dl className={styles.specGrid}>
+                  {s.specs.map(([k, v]) => (
+                    <div key={k}>
+                      <dt>{k}</dt>
+                      <dd>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            )}
+
+            {tab === "schematic" && (
+              <>
+                <p className={styles.screenTitle}>{s.schematic.title}</p>
+                <Schematic {...s.schematic} />
+                {system === "clawquant" && (
+                  <pre className={styles.log}>
+                    <code>{`[state] equity floor: protected\n[order] DUAL-PROD-BTCUSDT-1729432000214`}</code>
+                  </pre>
+                )}
+              </>
+            )}
+
+            {tab === "extra" && system === "clawquant" && (
+              <>
+                <p className={styles.screenTitle}>Circuit-breaker drill</p>
+                <p className={styles.screenNote}>
+                  A simulation that runs in your browser, with no connection to the live engine. It shows
+                  what happens on a volatility cascade: the breaker trips and no new order leaves the router
+                  until conditions reset.
+                </p>
+                <div className={styles.simRow}>
+                  <button type="button" onClick={tripBreaker} className={styles.simButton} disabled={tripped}>
+                    {tripped ? "Breaker tripped…" : "Run simulated breaker trip"}
+                  </button>
+                  <span className={styles.simStatus} aria-live="polite">
+                    {tripped ? "Orders blocked" : "Gate nominal"}
+                  </span>
+                </div>
+              </>
+            )}
+
+            {tab === "extra" && system === "reach" && (
+              <>
+                <p className={styles.screenTitle}>Production stack</p>
+                <ul className={styles.stackList}>
+                  {["ASP.NET Core", "SQL Server", "REST APIs", "GDPR hardening"].map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+              </>
+            )}
           </motion.div>
-
-          <div className={styles.ledIndicator}>
-            <span
-              className={`${styles.ledDot} ${
-                simRiskStatus === "TRIGGERED" ? styles.ledRed : styles.ledAmber
-              }`}
-            />
-            <span className={styles.ledLabel}>
-              {simRiskStatus === "TRIGGERED" ? "CIRCUIT BREAKER ENGAGED" : "RISK GATE: E1 NOMINAL"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Tactile Push Tabs with Smooth Spring Motion */}
-      <div className={styles.tabsRack}>
-        <button
-          type="button"
-          onClick={() => setActiveTab("overview")}
-          className={`${styles.tactileTab} ${activeTab === "overview" ? styles.tabActive : ""}`}
-        >
-          <Activity size={13} className={styles.tabIcon} />
-          <span>Overview</span>
-          {activeTab === "overview" && (
-            <motion.div
-              layoutId="activeTabGlow"
-              className={styles.tabGlowIndicator}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("architecture")}
-          className={`${styles.tactileTab} ${activeTab === "architecture" ? styles.tabActive : ""}`}
-        >
-          <GitBranch size={13} className={styles.tabIcon} />
-          <span>Architecture</span>
-          {activeTab === "architecture" && (
-            <motion.div
-              layoutId="activeTabGlow"
-              className={styles.tabGlowIndicator}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("telemetry")}
-          className={`${styles.tactileTab} ${activeTab === "telemetry" ? styles.tabActive : ""}`}
-        >
-          <Cpu size={13} className={styles.tabIcon} />
-          <span>Execution Path</span>
-          {activeTab === "telemetry" && (
-            <motion.div
-              layoutId="activeTabGlow"
-              className={styles.tabGlowIndicator}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("simulator")}
-          className={`${styles.tactileTab} ${activeTab === "simulator" ? styles.tabActive : ""}`}
-        >
-          <ShieldAlert size={13} className={styles.tabIcon} />
-          <span>Risk Test</span>
-          {activeTab === "simulator" && (
-            <motion.div
-              layoutId="activeTabGlow"
-              className={styles.tabGlowIndicator}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
-        </button>
-      </div>
-
-      {/* Recessed CRT / Enamel Display with Fade & Slide Transitions */}
-      <div className={styles.recessedScreen}>
-        <div className={styles.screenScanlines} aria-hidden="true" />
-
-        <AnimatePresence mode="wait">
-          {activeTab === "overview" && (
-            <motion.div
-              key="overview"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className={styles.screenContent}
-            >
-              <div className={styles.projectHeader}>
-                <div>
-                  <span className={styles.specLabel}>FLAGSHIP PRODUCTION ARTERY</span>
-                  <h3 className={styles.screenTitle}>ClawQuant Trade Engine</h3>
-                </div>
-                <span className={styles.environmentTag}>PROD // BYBIT UTA</span>
-              </div>
-
-              <p className={styles.screenDescription}>
-                24/7 autonomous trade execution engine with strict deterministic risk gates,
-                drawdown stop limits, and sub-second signal dispatch across perpetuals.
-              </p>
-
-              <div className={styles.specMetricsGrid}>
-                <div className={styles.specBlock}>
-                  <span className={styles.specKey}>RUNTIME LATENCY</span>
-                  <span className={styles.specValue}>&lt; {latencyValue}ms Loop</span>
-                </div>
-                <div className={styles.specBlock}>
-                  <span className={styles.specKey}>EXECUTION MODE</span>
-                  <span className={styles.specValue}>Strict Maker-Only</span>
-                </div>
-                <div className={styles.specBlock}>
-                  <span className={styles.specKey}>RISK GOVERNOR</span>
-                  <span className={styles.specValue}>Conformal Safe Exit</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === "architecture" && (
-            <motion.div
-              key="architecture"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className={styles.screenContent}
-            >
-              <div className={styles.projectHeader}>
-                <div>
-                  <span className={styles.specLabel}>SYSTEM TOPOLOGY</span>
-                  <h3 className={styles.screenTitle}>Deterministic State Pipeline</h3>
-                </div>
-              </div>
-
-              <div className={styles.topologyDiagram}>
-                <div className={styles.topoNode}>WebSocket Tick Stream</div>
-                <span className={styles.topoArrow}>→</span>
-                <div className={styles.topoNode}>Signal Evaluator</div>
-                <span className={styles.topoArrow}>→</span>
-                <div className={`${styles.topoNode} ${styles.topoGate}`}>Risk Gate (E1)</div>
-                <span className={styles.topoArrow}>→</span>
-                <div className={styles.topoNode}>Order Router</div>
-              </div>
-
-              <div className={styles.terminalSnippet}>
-                <span className={styles.termComment}>// Atomic Double-Entry Ledger State</span>
-                <span className={styles.termLine}>[STATE] Invariant Floor: Bedrock Protected</span>
-                <span className={styles.termLine}>[ORDER] DUAL-PROD-BTCUSDT-1729432000214</span>
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === "telemetry" && (
-            <motion.div
-              key="telemetry"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className={styles.screenContent}
-            >
-              <div className={styles.projectHeader}>
-                <div>
-                  <span className={styles.specLabel}>DEPLOYMENT SPECIFICATION</span>
-                  <h3 className={styles.screenTitle}>Production Stack & Guardrails</h3>
-                </div>
-              </div>
-
-              <div className={styles.stackPillsRow}>
-                <span className={styles.stackPill}>Python 3.12</span>
-                <span className={styles.stackPill}>FastAPI</span>
-                <span className={styles.stackPill}>AsyncIO</span>
-                <span className={styles.stackPill}>Docker Container</span>
-                <span className={styles.stackPill}>PostgreSQL</span>
-              </div>
-
-              <p className={styles.screenDescriptionSmall}>
-                Zero-downtime execution with persistent double-entry accounting (.tmp to atomic rename)
-                and autonomous self-healing telemetry.
-              </p>
-            </motion.div>
-          )}
-
-          {activeTab === "simulator" && (
-            <motion.div
-              key="simulator"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className={styles.screenContent}
-            >
-              <div className={styles.projectHeader}>
-                <div>
-                  <span className={styles.specLabel}>INTERACTIVE RISK HARNESS</span>
-                  <h3 className={styles.screenTitle}>Simulate Flash Cascade Event</h3>
-                </div>
-              </div>
-
-              <p className={styles.screenDescriptionSmall}>
-                Test the deterministic circuit breaker response. Triggering simulates extreme
-                bid/ask spread blowout, automatically engaging the emergency hedge gate.
-              </p>
-
-              <div className={styles.simActionsRow}>
-                <motion.button
-                  type="button"
-                  onClick={handleSimulateVolatility}
-                  className={styles.simButton}
-                  whileTap={{ scale: 0.96 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  ⚡ Trigger Flash Volatility Spike
-                </motion.button>
-
-                <div className={styles.simStatusBadge}>
-                  Status: <strong>{simRiskStatus}</strong>
-                </div>
-              </div>
-            </motion.div>
-          )}
         </AnimatePresence>
       </div>
-
-      {/* Bottom Chassis Controls & Direct Verification Link */}
-      <div className={styles.bottomBezel}>
-        <div className={styles.bottomMeta}>
-          <span className={styles.metaLabel}>SOURCE STATUS</span>
-          <span className={styles.metaValue}>VERIFIED REPOSITORY</span>
-        </div>
-
-        <motion.a
-          href="https://github.com/saad-lamkadam"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.tactileConsoleLink}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <GithubIcon size={13} />
-          <span>Inspect Architecture</span>
-          <ExternalLink size={11} />
-        </motion.a>
-      </div>
-    </motion.div>
+    </div>
   );
 };

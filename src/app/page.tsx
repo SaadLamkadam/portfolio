@@ -1,417 +1,315 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
 import { Header } from "@/components/Header";
 import { ProjectInstrument } from "@/components/ProjectInstrument";
-import { ArtDecoFrame } from "@/components/ArtDecoFrame";
-import { ArtDecoGraphic } from "@/components/ArtDecoGraphic";
-import { ArrowRight, Download, ExternalLink, MapPin, ChevronRight, Check } from "lucide-react";
+import { GreetingProvider, GreetingWord, LanguagePicker } from "@/components/Greeting";
+import { Dossiers, type Dossier } from "@/components/Dossiers";
+import { VfdReadout } from "@/components/VfdReadout";
+import { Falcon } from "@/components/Falcon";
+import { InteractionLayer } from "@/components/InteractionLayer";
+import { ArrowRight, Download, ArrowUpRight } from "lucide-react";
 import styles from "./page.module.css";
 
-export default function Home() {
-  const [selectedCaseStudy, setSelectedCaseStudy] = useState<string | null>(null);
-  const [copiedEmail, setCopiedEmail] = useState(false);
+const DOSSIERS: Dossier[] = [
+  {
+    id: "reach",
+    title: "REACH IoT telemetry pipeline",
+    when: "2023 – 2025 · EU-funded, Sens Innovation / Llobeno",
+    text: "Backend architecture, database schema and live sensor-stream processing for hotel energy systems across Europe.",
+    stack: "ASP.NET Core, SQL Server, REST APIs, GDPR hardening",
+    schematic: { title: "REACH telemetry path", nodes: ["Hotel sensors", "Stream proc.", "ASP.NET API", "SQL Server", "Alerts"] },
+    details: [
+      "Designed the backend architecture and database schema for the EU-funded REACH project.",
+      "Real-time processing of sensor streams from hospitality sites, running 24/7.",
+      "Automated alerting cut manual intervention by 75% and lifted uptime by 28%.",
+      "Strict GDPR compliance across stored telemetry.",
+    ],
+  },
+  {
+    id: "prezzreali",
+    title: "PrezzReali.mt retail intelligence",
+    when: "2024 · Distributed scraping",
+    text: "Automated price monitoring across Maltese retail portals, so shoppers compare real shelf prices.",
+    stack: "Node.js, Puppeteer, PostgreSQL, Redis",
+    schematic: { title: "PrezzReali data path", nodes: ["Retail portals", "Session pool", "Workers", "Consensus", "PostgreSQL"], gate: 3 },
+    details: [
+      "Rotating session pools keep scraping reliable against anti-bot measures.",
+      "Distributed workers collect prices in parallel across portals.",
+      "Multi-worker consensus verifies a price before it is published, so one bad read never reaches a shopper.",
+    ],
+    link: { href: "https://prezzreali.mt", label: "Visit prezzreali.mt" },
+  },
+];
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("saad.lamkadam@gmail.com");
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2400);
-  };
+const EXPERIENCE = [
+  {
+    years: "2023–25",
+    role: "Full-stack developer & IoT engineer",
+    org: "Sens Innovation Ltd / Llobeno Ltd · Gżira",
+    text: "IoT energy-management pipelines running 24/7 across hospitality sites on ASP.NET, SQL Server and REST APIs. Led development on the EU-funded REACH project: backend architecture, schema and real-time sensor processing, under strict GDPR compliance.",
+  },
+  {
+    years: "2022–23",
+    role: "Digital developer & automation specialist",
+    org: "Office of the Prime Minister, Servizz.gov · Valletta",
+    text: "Citizen-facing digital services across Malta and Gozo inside core government infrastructure. Automated cross-ministry onboarding and approvals with Power Automate and Power Apps, and worked with the Treasury (CFR) and MITA to resolve data inconsistencies with auditable rollback.",
+  },
+  {
+    years: "2020–21",
+    role: "Junior full-stack software engineer",
+    org: "Avantech Software Ltd (Canon) · San Ġwann",
+    text: "Enterprise applications in C#, .NET Web API and AngularJS for banking and wealth-management clients, and a secure workflow integration for the Identity Malta Public Registry using the Therefore API.",
+  },
+  {
+    years: "2019–20",
+    role: "Junior full-stack developer",
+    org: "Metallform Malta Ltd · Ħal Far",
+    text: "Medical-device QA monitoring software and internal portals in C#, ASP.NET and WinForms, plus an automated payroll cheque-printing system for 1,400+ employees across three warehouses.",
+  },
+];
 
+const CERTIFICATIONS = [
+  { name: "IBM AI Developer & Data Science Professional", detail: "Machine-learning pipelines, neural networks and generative AI, 2024" },
+  { name: "Google Project Management Professional", detail: "6 ECTS equivalent, Agile/Scrum and governance, Coursera 2024" },
+  { name: "Google IT Support Professional Certificate", detail: "240 hours, Linux administration and networking, 2024" },
+  { name: "Microsoft Power Platform & RPA Automation", detail: "Accredited CPE: Power Apps, Power Automate cloud and desktop RPA, KPMG Academy" },
+  { name: "GDPR for Data Protection Officers", detail: "MQF Level 4 (1 ECTS), Jobsplus / MFHEA, 2024" },
+  { name: "Maltese Language & Culture Integration", detail: "Distinction (85%), University of Malta / Ministry for Justice" },
+];
+
+const FACTS = [
+  { term: "Work rights", value: "EU family member, unrestricted EU/EEA work rights" },
+  { term: "Languages", value: "English (C2), Italian (B2), Maltese (B1), French and Arabic (native)" },
+  { term: "Primary stack", value: "Python, C# / .NET, TypeScript, FastAPI, PostgreSQL, Docker" },
+  { term: "Disability registration", value: "Jobsplus Reg. No. 10363, permanent (Act 1995)" },
+];
+
+function SectionHead({ index, id, children }: { index: string; id: string; children: React.ReactNode }) {
   return (
-    <div className={styles.canvas}>
+    <div className={`${styles.head} reveal`}>
+      <span className={styles.index} aria-hidden="true">
+        <span className={styles.node} />
+        <span className={styles.num}>{index}</span>
+      </span>
+      <h2 id={id} className={styles.h2}>
+        {children}
+      </h2>
+    </div>
+  );
+}
+
+function StepDivider() {
+  return (
+    <div className={styles.divider} aria-hidden="true">
+      <span />
+      <svg viewBox="0 0 56 20" className={styles.chevron}>
+        <path d="M0 10H14L20 4H36L42 10H56M20 16H36M24 10H32" />
+        <path d="M28 2 34 10 28 18 22 10Z" className={styles.chevronFill} />
+      </svg>
+      <span />
+    </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <div id="top" className={styles.page}>
+      <InteractionLayer />
       <Header />
 
-      <main className={styles.mainContainer}>
-        {/* EDITORIAL HERO SECTION: GOLDEN RATIO ASYMMETRIC GRID (1.618 : 1) */}
-        <section className={styles.heroSection}>
-          {/* Left Major Column: Identity & Positioning (φ Major) */}
-          <motion.div
-            className={styles.heroIntro}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <div className={styles.profileHeader}>
-              <ArtDecoFrame className={styles.portraitFrame} label="ENGINEERING PROFILE">
-                <div className={styles.imageWrapper}>
-                  <Image
-                    src="/saad_lamkadam_portrait.png"
-                    alt="Saad (Jake) Lamkadam"
-                    width={110}
-                    height={110}
-                    priority
-                    className={styles.portraitImg}
-                  />
-                </div>
-              </ArtDecoFrame>
+      <main className={styles.main}>
+        <div className={styles.spine} aria-hidden="true" />
 
-              <div className={styles.profileBioBlock}>
-                <div className={styles.locationTag}>
-                  <MapPin size={12} className={styles.pinIcon} />
-                  <span>Gzira, Malta · Senior Engineer</span>
-                </div>
-                <div className={styles.provenanceNote}>
-                  <span className={styles.provDot} />
-                  <span>EU Family Member · Unrestricted EU/EEA Work Rights</span>
-                </div>
-              </div>
-            </div>
-
-            <h1 className={styles.heroHeadline}>
-              Engineering resilient backend architectures, production AI systems, and real-time data pipelines.
+        <GreetingProvider>
+          <section className={`${styles.wrap} ${styles.hero}`} aria-labelledby="hero-title">
+            <h1 id="hero-title" className={styles.heroTitle}>
+              <span className={styles.srOnly}>Hello, </span>
+              <GreetingWord />
+              <span className={styles.heroName}>I’m Saad Lamkadam.</span>
             </h1>
 
-            <p className={styles.heroStatement}>
-              Over 7 years architecting high-availability IoT telemetry pipelines running 24/7 across hospitality sites, 
-              automating cross-ministry workflows for the Office of the Prime Minister, and building autonomous algorithmic trading engines.
-            </p>
-
-            <div className={styles.actionsCluster}>
-              <motion.a
-                href="#work"
-                className={styles.primaryAction}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <span>View selected work</span>
-                <ArrowRight size={14} />
-              </motion.a>
-
-              <motion.a
-                href="/Saad_Lamkadam_Europass_CV.pdf"
-                download="Saad_Lamkadam_Europass_CV.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.secondaryLink}
-                whileHover={{ x: 2 }}
-              >
-                <span>Download CV (PDF)</span>
-                <Download size={13} />
-              </motion.a>
-            </div>
-          </motion.div>
-
-          {/* Right Minor Column: Physical Tactile Instrument Panel (φ Minor) */}
-          <div className={styles.heroConsoleWrapper}>
-            <div className={styles.consoleHeaderRule}>
-              <span className={styles.consoleLabel}>FEATURED SYSTEM SPECIFICATION</span>
-              <span className={styles.artDecoHairline} />
-            </div>
-            <ProjectInstrument />
-          </div>
-        </section>
-
-        {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <ArtDecoGraphic type="chevron" />
-
-        {/* 01 / SELECTED WORK SECTION */}
-        <section id="work" className={styles.sectionBlock}>
-          <div className={styles.sectionHeadingRow}>
-            <div className={styles.sectionIndex}>01 / SYSTEMS</div>
-            <h2 className={styles.sectionHeading}>Selected Engineering Work</h2>
-          </div>
-
-          <div className={styles.workList}>
-            {/* Project Item 1 */}
-            <motion.article
-              className={styles.workRow}
-              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className={styles.workMeta}>
-                <span className={styles.workYear}>2024 — PRESENT</span>
-                <span className={styles.workCategory}>Algorithmic Trading & Risk</span>
-              </div>
-              <div className={styles.workDetails}>
-                <h3 className={styles.workTitle}>ClawQuant Trade Execution Engine</h3>
-                <p className={styles.workExcerpt}>
-                  Architected a 24/7 autonomous trade execution engine featuring deterministic circuit breakers,
-                  strict drawdown stops, and sub-second signal dispatch across crypto perpetuals (Python, FastAPI, Bybit UTA).
+            <div className={styles.heroBody}>
+              <div className={styles.heroText}>
+                <p className={styles.statement}>
+                  Software and AI systems engineer in Gżira, Malta. Seven years building backends that
+                  cannot stop: hotel energy telemetry, government workflows and a 24/7 trading engine.
                 </p>
-                <div className={styles.workTechStack}>
-                  <span>Python 3.12</span>
-                  <span>FastAPI</span>
-                  <span>AsyncIO</span>
-                  <span>Docker</span>
-                  <span>Bybit UTA</span>
+
+                <div className={styles.actions}>
+                  <a href="#work" className={styles.primary} data-sheen>
+                    See the work
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </a>
+                  <a
+                    href="/Saad_Lamkadam_Europass_CV.pdf"
+                    download="Saad_Lamkadam_Europass_CV.pdf"
+                    className={styles.secondary}
+                  >
+                    Download CV (PDF)
+                    <Download size={17} aria-hidden="true" />
+                  </a>
                 </div>
+
+                <LanguagePicker />
               </div>
-              <div className={styles.workLink}>
+
+              <figure className={styles.portrait}>
+                <div className={styles.frame}>
+                  <span className={`${styles.step} ${styles.sTl}`} aria-hidden="true" />
+                  <span className={`${styles.step} ${styles.sTr}`} aria-hidden="true" />
+                  <span className={`${styles.step} ${styles.sBl}`} aria-hidden="true" />
+                  <span className={`${styles.step} ${styles.sBr}`} aria-hidden="true" />
+                  <div className={styles.mat}>
+                    <Image
+                      src="/saad_lamkadam_portrait.png"
+                      alt="Portrait of Saad Lamkadam"
+                      width={800}
+                      height={800}
+                      priority
+                      sizes="(max-width: 760px) 100vw, 40vw"
+                    />
+                  </div>
+                </div>
+                <figcaption>Gżira, Malta · unrestricted EU/EEA work rights</figcaption>
+              </figure>
+            </div>
+          </section>
+        </GreetingProvider>
+
+        <section id="work" className={`${styles.work} shutter`} aria-labelledby="work-title">
+          <div className={styles.wrap}>
+            <SectionHead index="01" id="work-title">
+              Systems in production
+            </SectionHead>
+
+            <article className={styles.feature}>
+              <div className={`${styles.featureText} reveal`}>
+                <h3 className={styles.featureTitle}>ClawQuant trade execution engine</h3>
+                <p className={styles.when}>2024 – present · Algorithmic trading and risk</p>
+                <p className={styles.workText}>
+                  A 24/7 autonomous execution engine for crypto perpetuals: deterministic circuit breakers,
+                  strict drawdown stops and sub-second signal dispatch, with every order passing a risk gate
+                  before it reaches the exchange.
+                </p>
+                <p className={styles.stack}>Python 3.12, FastAPI, AsyncIO, Docker, Bybit UTA</p>
                 <a
                   href="https://github.com/saad-lamkadam"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={styles.rowLink}
+                  className={styles.darkLink}
                 >
-                  <span>Repository</span>
-                  <ExternalLink size={12} />
+                  Code on GitHub
+                  <ArrowUpRight size={18} aria-hidden="true" />
                 </a>
               </div>
-            </motion.article>
+              <div className={styles.featureUi}>
+                <ProjectInstrument />
+              </div>
+            </article>
 
-            {/* Project Item 2 */}
-            <motion.article
-              className={styles.workRow}
-              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className={styles.workMeta}>
-                <span className={styles.workYear}>2023 — 2025</span>
-                <span className={styles.workCategory}>IoT Telemetry & Energy</span>
-              </div>
-              <div className={styles.workDetails}>
-                <h3 className={styles.workTitle}>EU-Funded REACH IoT Telemetry Pipeline</h3>
-                <p className={styles.workExcerpt}>
-                  Engineered backend architecture, database schema, and live sensor stream processing for European hospitality sites.
-                  Built automated alerting slashing manual intervention by 75% and increasing uptime by 28% (Sens Innovation / Llobeno).
-                </p>
-                <div className={styles.workTechStack}>
-                  <span>ASP.NET Core</span>
-                  <span>SQL Server</span>
-                  <span>REST APIs</span>
-                  <span>GDPR Hardening</span>
-                </div>
-              </div>
-              <div className={styles.workLink}>
-                <span className={styles.deployedClient}>Sens Innovation Ltd</span>
-              </div>
-            </motion.article>
-
-            {/* Project Item 3 */}
-            <motion.article
-              className={styles.workRow}
-              whileHover={{ backgroundColor: "rgba(168, 129, 44, 0.02)" }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className={styles.workMeta}>
-                <span className={styles.workYear}>2024</span>
-                <span className={styles.workCategory}>Distributed Scraping</span>
-              </div>
-              <div className={styles.workDetails}>
-                <h3 className={styles.workTitle}>PrezzReali.mt Retail Intelligence</h3>
-                <p className={styles.workExcerpt}>
-                  Engineered automated price monitoring across Maltese retail portals with anti-blocking session pool rotation,
-                  distributed data scraping, and multi-worker consensus verification.
-                </p>
-                <div className={styles.workTechStack}>
-                  <span>Node.js</span>
-                  <span>Puppeteer</span>
-                  <span>PostgreSQL</span>
-                  <span>Redis</span>
-                </div>
-              </div>
-              <div className={styles.workLink}>
-                <a
-                  href="https://prezzreali.mt"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.rowLink}
-                >
-                  <span>Platform</span>
-                  <ExternalLink size={12} />
-                </a>
-              </div>
-            </motion.article>
-          </div>
-        </section>
-
-        {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <ArtDecoGraphic type="chevron" />
-
-        {/* 02 / CAREER HISTORY SECTION */}
-        <section id="experience" className={styles.sectionBlock}>
-          <div className={styles.sectionHeadingRow}>
-            <div className={styles.sectionIndex}>02 / EXPERIENCE</div>
-            <h2 className={styles.sectionHeading}>Engineering Career</h2>
-          </div>
-
-          <div className={styles.experienceList}>
-            <div className={styles.expItem}>
-              <div className={styles.expDate}>2023 — 2025</div>
-              <div className={styles.expContent}>
-                <h3 className={styles.expRole}>Full-Stack Developer & IoT Engineer</h3>
-                <span className={styles.expOrg}>Sens Innovation Ltd / Llobeno Ltd · Gzira, Malta</span>
-                <p className={styles.expText}>
-                  Architected IoT energy management pipelines operating 24/7 across hospitality sites using ASP.NET, SQL Server, and REST APIs.
-                  Led development on the EU-funded REACH Project, designing backend architecture, DB schema, and real-time sensor processing.
-                  Built automated alerting systems reducing manual intervention by 75% and improving uptime by 28%. Enforced strict GDPR compliance.
-                </p>
-              </div>
-            </div>
-
-            <div className={styles.expItem}>
-              <div className={styles.expDate}>2022 — 2023</div>
-              <div className={styles.expContent}>
-                <h3 className={styles.expRole}>Digital Developer & Automation Specialist</h3>
-                <span className={styles.expOrg}>Office of the Prime Minister — Servizz.gov · Valletta, Malta</span>
-                <p className={styles.expText}>
-                  Developed and deployed citizen-facing digital services across Malta and Gozo inside core government infrastructure.
-                  Automated cross-ministry onboarding and approval workflows using Power Automate and Power Apps, slashing processing delays by 30%.
-                  Partnered directly with the Maltese Treasury (CFR) and MITA to resolve inter-ministerial data inconsistencies with auditable rollback logic.
-                </p>
-              </div>
-            </div>
-
-            <div className={styles.expItem}>
-              <div className={styles.expDate}>2020 — 2021</div>
-              <div className={styles.expContent}>
-                <h3 className={styles.expRole}>Junior Full-Stack Software Engineer</h3>
-                <span className={styles.expOrg}>Avantech Software Ltd (Canon) · San Gwann, Malta</span>
-                <p className={styles.expText}>
-                  Engineered and maintained full-stack enterprise applications using C#, .NET Web API, and AngularJS for financial services, banking, and wealth management clients.
-                  Developed secure internal workflow integration for the Identity Malta Public Registry utilizing Therefore API.
-                </p>
-              </div>
-            </div>
-
-            <div className={styles.expItem}>
-              <div className={styles.expDate}>2019 — 2020</div>
-              <div className={styles.expContent}>
-                <h3 className={styles.expRole}>Junior Full-Stack Developer</h3>
-                <span className={styles.expOrg}>Metallform Malta Ltd · Hal Far, Malta</span>
-                <p className={styles.expText}>
-                  Constructed medical device QA monitoring software and internal enterprise portals using C#, ASP.NET, and WinForms.
-                  Built an automated payroll check printing system serving 1,400+ employees across 3 facility warehouses.
-                </p>
-              </div>
+            <div className={styles.dossiers}>
+              <Dossiers items={DOSSIERS} />
             </div>
           </div>
         </section>
 
-        {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <ArtDecoGraphic type="chevron" />
-
-        {/* 03 / CREDENTIALS SECTION */}
-        <section id="credentials" className={styles.sectionBlock}>
-          <div className={styles.sectionHeadingRow}>
-            <div className={styles.sectionIndex}>03 / CREDENTIALS</div>
-            <h2 className={styles.sectionHeading}>Certifications & Legal Status</h2>
+        <section className={styles.results} aria-labelledby="results-title">
+          <div className={styles.wrap}>
+            <SectionHead index="02" id="results-title">
+              What changed once it shipped
+            </SectionHead>
+            <div className={`${styles.readouts} reveal`}>
+              <VfdReadout value={75} suffix="%" label="less manual intervention on hotel energy sites, from automated alerting" />
+              <VfdReadout value={28} suffix="%" label="more uptime on the same IoT sensor network" />
+              <VfdReadout value={30} suffix="%" label="shorter processing delays across ministry approval workflows" />
+              <VfdReadout value={1400} suffix="+" label="employees paid by the automated payroll printing system" />
+            </div>
           </div>
+        </section>
 
-          <div className={styles.credentialsGrid}>
-            <div className={styles.credentialsCol}>
-              <h3 className={styles.subColHeading}>Professional Certifications</h3>
-              <ul className={styles.cleanList}>
-                <li>
-                  <strong>Google Project Management Professional</strong>
-                  <span>6 ECTS Equivalent · Agile/Scrum & Governance (Coursera, 2024)</span>
-                </li>
-                <li>
-                  <strong>Google IT Support Professional Certificate</strong>
-                  <span>240 Hours · Linux administration, network architecture (2024)</span>
-                </li>
-                <li>
-                  <strong>IBM AI Developer & Data Science Professional</strong>
-                  <span>Machine Learning pipelines, Neural Networks & Generative AI (2024)</span>
-                </li>
-                <li>
-                  <strong>Microsoft Power Platform & RPA Automation</strong>
-                  <span>Accredited CPE: Power Apps, Power Automate Cloud/Desktop RPA (KPMG Academy)</span>
-                </li>
-                <li>
-                  <strong>GDPR for Data Protection Officers (DPO)</strong>
-                  <span>MQF Level 4 (1 ECTS) · Jobsplus / MFHEA (2024)</span>
-                </li>
-                <li>
-                  <strong>Maltese Language & Culture Integration</strong>
-                  <span>Distinction (85%) · University of Malta / Ministry for Justice</span>
-                </li>
+        <section id="experience" className={`${styles.wrap} ${styles.experience} shutter`} aria-labelledby="exp-title">
+          <SectionHead index="03" id="exp-title">
+            Seven years, four teams
+          </SectionHead>
+          <ol className={styles.ledger}>
+            {EXPERIENCE.map((e) => (
+              <li key={e.years} className={`${styles.ledgerRow} reveal`}>
+                <span className={styles.years}>{e.years}</span>
+                <div>
+                  <h3 className={styles.role}>{e.role}</h3>
+                  <p className={styles.plate}>{e.org}</p>
+                </div>
+                <p className={styles.ledgerText}>{e.text}</p>
+              </li>
+            ))}
+          </ol>
+          <StepDivider />
+        </section>
+
+        <section id="credentials" className={`${styles.credentials} shutter`} aria-labelledby="cred-title">
+          <div className={styles.wrap}>
+            <SectionHead index="04" id="cred-title">
+              Credentials and work rights
+            </SectionHead>
+            <div className={styles.credGrid}>
+              <ul className={`${styles.certs} reveal`}>
+                {CERTIFICATIONS.map((c) => (
+                  <li key={c.name}>
+                    <h3 className={styles.certName}>{c.name}</h3>
+                    <p className={styles.certDetail}>{c.detail}</p>
+                  </li>
+                ))}
               </ul>
-            </div>
-
-            <div className={styles.credentialsCol}>
-              <h3 className={styles.subColHeading}>Legal Status & Competencies</h3>
-              <div className={styles.legalBox}>
-                <div className={styles.legalRow}>
-                  <span className={styles.legalLabel}>Work Authorization</span>
-                  <span className={styles.legalVal}>EU Family Member · Unrestricted EU/EEA work rights</span>
-                </div>
-                <div className={styles.legalRow}>
-                  <span className={styles.legalLabel}>Disability Registration</span>
-                  <span className={styles.legalVal}>Jobsplus Reg. No. 10363, Permanent (Act 1995)</span>
-                </div>
-                <div className={styles.legalRow}>
-                  <span className={styles.legalLabel}>Primary Stack</span>
-                  <span className={styles.legalVal}>Python, C# / .NET, TypeScript, FastAPI, PostgreSQL, Docker</span>
-                </div>
-                <div className={styles.legalRow}>
-                  <span className={styles.legalLabel}>Languages</span>
-                  <span className={styles.legalVal}>English (C2 Fluent), Italian (B2), Maltese (B1), French & Arabic (Native)</span>
-                </div>
-              </div>
+              <dl className={`${styles.facts} reveal`}>
+                {FACTS.map((f) => (
+                  <div key={f.term}>
+                    <dt>{f.term}</dt>
+                    <dd>{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </section>
 
-        {/* RESTRAINED ART DECO SECTION DIVIDER */}
-        <ArtDecoGraphic type="chevron" />
-
-        {/* 04 / CONTACT SECTION */}
-        <section id="contact" className={styles.sectionBlock}>
-          <div className={styles.sectionHeadingRow}>
-            <div className={styles.sectionIndex}>04 / CONTACT</div>
-            <h2 className={styles.sectionHeading}>Direct Communication</h2>
-          </div>
-
-          <div className={styles.contactPanel}>
-            <div className={styles.contactDetails}>
-              <p className={styles.contactIntro}>
-                For software engineering roles, system architecture advisory, or enterprise consultations:
-              </p>
-              <div className={styles.contactLinks}>
-                <motion.button
-                  type="button"
-                  onClick={handleCopyEmail}
-                  className={styles.emailPillButton}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span>saad.lamkadam@gmail.com</span>
-                  {copiedEmail ? <Check size={13} className={styles.checkIcon} /> : <span className={styles.copyHint}>Copy</span>}
-                </motion.button>
-
-                <span className={styles.contactSep}>/</span>
-
-                <a href="tel:+35699971955" className={styles.contactActionLink}>
-                  (+356) 99971955
+        <section id="contact" className={`${styles.contact} shutter`} aria-labelledby="contact-title">
+          <div className={styles.wrap}>
+            <div className={styles.contactGrid}>
+              <div className="reveal">
+                <SectionHead index="05" id="contact-title">
+                  Write to me
+                </SectionHead>
+                <p className={styles.contactIntro}>
+                  For engineering roles, architecture advice or consulting work.
+                </p>
+                <a href="mailto:saad.lamkadam@gmail.com" className={styles.email}>
+                  saad.lamkadam@gmail.com
                 </a>
-
-                <span className={styles.contactSep}>/</span>
-
-                <a
-                  href="https://github.com/saad-lamkadam"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.contactActionLink}
-                >
-                  GitHub
-                </a>
-
-                <span className={styles.contactSep}>/</span>
-
-                <a
-                  href="https://credly.com/users/saad-lamkadam"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.contactActionLink}
-                >
-                  Credly
-                </a>
+                <ul className={styles.contactLinks}>
+                  <li>
+                    <a href="tel:+35699971955">+356 9997 1955</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/saad-lamkadam" target="_blank" rel="noopener noreferrer">
+                      GitHub
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://credly.com/users/saad-lamkadam" target="_blank" rel="noopener noreferrer">
+                      Credly
+                    </a>
+                  </li>
+                </ul>
               </div>
+              <Falcon className={styles.contactFalcon} />
             </div>
           </div>
+          <footer className={`${styles.wrap} ${styles.footer}`}>
+            <span>© 2026 Saad (Jake) Lamkadam</span>
+            <span>Gżira, Malta</span>
+          </footer>
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerInner}>
-          <span>Saad (Jake) Lamkadam · Software & AI Systems Engineer</span>
-          <span>Malta · 2026</span>
-        </div>
-      </footer>
     </div>
   );
 }

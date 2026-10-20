@@ -1,0 +1,48 @@
+.readout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.tube {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 6px;
+  background: var(--console-inset);
+  box-shadow: var(--lit-pressed), inset -1px -1px 0 rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 4.6vw, 4.236rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--amber);
+  text-shadow: 0 0 8px rgba(255, 179, 71, 0.55);
+  white-space: nowrap;
+}
+
+.label {
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  color: var(--on-dark-2);
+  max-width: 26ch;
+}
+
+@media (max-width: 760px) {
+  .tube {
+    font-size: 1.75rem;
+    padding: var(--space-2) var(--space-3);
+  }
+  .label {
+    font-size: 0.9375rem;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

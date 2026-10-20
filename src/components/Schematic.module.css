@@ -1,0 +1,65 @@
+.schematic {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.node,
+.gate,
+.wire path,
+.dim {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1;
+  fill: none;
+}
+
+.dark .node {
+  stroke: var(--brass-light);
+}
+.dark .text {
+  fill: var(--on-dark);
+}
+.dark .dim {
+  stroke: rgba(214, 175, 89, 0.4);
+}
+.dark .wire path {
+  stroke: var(--brass-light);
+}
+
+.light .node {
+  stroke: var(--brass);
+}
+.light .text {
+  fill: var(--ink);
+}
+.light .dim {
+  stroke: rgba(158, 123, 53, 0.45);
+}
+.light .wire path {
+  stroke: var(--brass);
+}
+
+.gate {
+  fill: var(--brass-light);
+  stroke: var(--brass-light);
+}
+
+.wire .arrow {
+  fill: var(--brass-light);
+}
+
+.light .wire .arrow {
+  fill: var(--brass);
+}
+
+.text,
+.gateText {
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+
+.gateText {
+  fill: var(--ink);
+  font-weight: 600;
+}

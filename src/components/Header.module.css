@@ -1,92 +1,78 @@
 .header {
   position: sticky;
   top: 0;
-  background: rgba(249, 248, 245, 0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--canvas-border);
   z-index: 50;
+  background: var(--stone);
+  box-shadow: 0 1px 0 var(--frame-line);
 }
 
 .inner {
-  max-width: var(--max-width);
+  max-width: calc(var(--content) + 2 * var(--margin));
   margin: 0 auto;
-  padding: 1.15rem 2rem;
+  padding: var(--space-3) var(--margin);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-3);
 }
 
-.identity {
-  display: flex;
+.wordmark {
+  display: inline-flex;
   align-items: center;
-  gap: 0.85rem;
-}
-
-.navCrest {
-  width: 32px;
-  height: 32px;
-}
-
-.nameBlock {
-  display: flex;
-  flex-direction: column;
-}
-
-.name {
+  gap: var(--space-2);
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--ink-primary);
-  letter-spacing: -0.01em;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
-.role {
-  color: var(--ink-secondary);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+/* Falcon mark drawn in the darker brass so it reads on vellum */
+.mark {
+  width: 34px;
+  height: auto;
+}
+
+.wordmark .mark path {
+  stroke: var(--brass);
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: var(--space-5);
 }
 
 .navLink {
-  font-size: 0.88rem;
+  font-size: 1rem;
   font-weight: 500;
-  color: var(--ink-secondary);
-  transition: color 0.15s ease;
+  color: var(--ink-2);
+  transition: color var(--dur-hover) var(--ease);
 }
 
 .navLink:hover {
-  color: var(--ink-primary);
+  color: var(--ink);
 }
 
-.githubLink {
-  color: var(--ink-muted);
-  display: inline-flex;
-  align-items: center;
-  transition: color 0.15s ease;
-  margin-left: 0.5rem;
+.action {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.618rem 1.1rem;
+  border-radius: 4px;
+  background: var(--obsidian);
+  color: var(--brass-light);
+  box-shadow: var(--lit-dark), var(--cast);
+  transition: transform var(--dur-hover) var(--ease), box-shadow var(--dur-hover) var(--ease);
 }
 
-.githubLink:hover {
-  color: var(--ink-primary);
+.action:active {
+  transform: translateY(2px);
+  box-shadow: var(--lit-pressed);
 }
 
-@media (max-width: 680px) {
-  .inner {
-    padding: 1rem 1.25rem;
-  }
-  .role {
+@media (max-width: 760px) {
+  .navLink {
     display: none;
-  }
-  .divider {
-    display: none;
-  }
-  .nav {
-    gap: 1rem;
   }
 }

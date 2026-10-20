@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-/* Disciplined 2-Family Pair: Editorial Serif + Precision Geometric Sans */
-const editorialSerif = Cormorant_Garamond({
-  weight: ["600", "700"],
-  subsets: ["latin"],
+const display = Bricolage_Grotesque({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700", "800"],
   variable: "--font-display",
   display: "swap",
 });
 
-const precisionSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const body = Instrument_Sans({
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
 });
 
-const telemetryMono = JetBrains_Mono({
+// Only used inside the ClawQuant interface fragment, which is real product UI.
+const mono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Saad (Jake) Lamkadam — Software & AI Systems Engineer",
+  title: "Saad Lamkadam — Software & AI Systems Engineer",
   description:
-    "Portfolio of Saad Lamkadam: 7+ years architecting IoT telemetry pipelines, Maltese government automations (Office of the Prime Minister), and 24/7 algorithmic trading systems.",
+    "Saad (Jake) Lamkadam, software and AI systems engineer in Gżira, Malta: 7+ years of IoT telemetry pipelines, government automation for the Office of the Prime Minister, and a 24/7 algorithmic trading engine.",
 };
 
 export default function RootLayout({
@@ -36,10 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${editorialSerif.variable} ${precisionSans.variable} ${telemetryMono.variable}`}
-    >
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );

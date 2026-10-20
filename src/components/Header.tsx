@@ -1,21 +1,17 @@
 import React from "react";
-import { ArtDecoGraphic } from "./ArtDecoGraphic";
-import { GithubIcon } from "./GithubIcon";
+import { Falcon } from "./Falcon";
 import styles from "./Header.module.css";
 
 export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <div className={styles.identity}>
-          <ArtDecoGraphic type="crest" className={styles.navCrest} />
-          <div className={styles.nameBlock}>
-            <span className={styles.name}>Saad Lamkadam</span>
-            <span className={styles.role}>Software & AI Systems Engineer</span>
-          </div>
-        </div>
+        <a href="#top" className={styles.wordmark}>
+          <Falcon className={styles.mark} speedlines={false} state="off" />
+          Saad Lamkadam
+        </a>
 
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="Sections">
           <a href="#work" className={styles.navLink}>
             Work
           </a>
@@ -25,17 +21,8 @@ export const Header: React.FC = () => {
           <a href="#credentials" className={styles.navLink}>
             Credentials
           </a>
-          <a href="#contact" className={styles.navLink}>
-            Contact
-          </a>
-          <a
-            href="https://github.com/saad-lamkadam"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.githubLink}
-            aria-label="GitHub profile"
-          >
-            <GithubIcon size={15} />
+          <a href="#contact" className={styles.action} data-sheen>
+            Get in touch
           </a>
         </nav>
       </div>

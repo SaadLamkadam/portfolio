@@ -1,0 +1,54 @@
+.wordSlot {
+  display: block;
+  min-height: 1em;
+}
+
+.word {
+  display: inline-block;
+}
+
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
+.pickerLabel {
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.option {
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  padding: 0.382rem 0.75rem;
+  cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease), transform var(--dur-hover) var(--ease);
+}
+
+.option:hover {
+  background: var(--stone-2);
+}
+
+.option:active {
+  transform: translateY(2px);
+}
+
+/* The selected language sits in a small obsidian plate, lit from the top-left */
+.option[aria-pressed="true"] {
+  background: var(--obsidian);
+  color: var(--brass-light);
+  box-shadow: var(--lit-dark);
+}

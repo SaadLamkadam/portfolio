@@ -1,0 +1,167 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+/* Stepped (chamfered) plate with a brass inlay, lit from the top-left */
+.dossier {
+  --c: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  background: var(--harbour-deep);
+  clip-path: polygon(var(--c) 0, calc(100% - var(--c)) 0, 100% var(--c), 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, var(--c) 100%, 0 calc(100% - var(--c)), 0 var(--c));
+  box-shadow: var(--lit-dark);
+}
+
+.dossier::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(214, 175, 89, 0.45);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  pointer-events: none;
+}
+
+.rivet {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.55), inset -1px -1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.tl {
+  top: 20px;
+  left: 20px;
+}
+.tr {
+  top: 20px;
+  right: 20px;
+}
+.bl {
+  bottom: 20px;
+  left: 20px;
+}
+.br {
+  bottom: 20px;
+  right: 20px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: clamp(1.5rem, 2.3vw, 2.125rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--on-dark);
+}
+
+.when,
+.stack {
+  font-size: 1rem;
+  color: var(--on-dark-2);
+}
+
+.text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--on-dark);
+  max-width: 52ch;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.618rem 1rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--obsidian);
+  color: var(--on-dark);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--lit-dark), var(--cast);
+  transition: transform var(--dur-hover) var(--ease), box-shadow var(--dur-hover) var(--ease);
+}
+
+.toggle:hover {
+  color: var(--brass-light);
+}
+
+.toggle:active {
+  transform: translateY(2px);
+  box-shadow: var(--lit-pressed);
+}
+
+.toggleIcon {
+  display: inline-flex;
+  color: var(--brass-light);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 600;
+  color: var(--brass-light);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+
+.fileWrap {
+  overflow: hidden;
+}
+
+.file {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+}
+
+.details {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--on-dark);
+  font-size: 1.0625rem;
+}
+
+.details li {
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+.details li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: var(--brass-light);
+}
+
+@media (max-width: 960px) {
+  .list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

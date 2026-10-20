@@ -1,0 +1,55 @@
+.falcon {
+  display: block;
+  overflow: visible;
+}
+
+.facets path {
+  stroke: var(--brass-light);
+  stroke-width: 1;
+  stroke-linejoin: miter;
+}
+
+.facets .malar {
+  fill: var(--brass);
+  fill-opacity: 0.55;
+}
+
+.facets .beak {
+  fill: var(--brass-light);
+}
+
+.speed path {
+  stroke: var(--brass);
+  stroke-width: 1;
+  stroke-linecap: square;
+}
+
+.eye {
+  transition: fill var(--dur-fade) var(--ease), filter var(--dur-fade) var(--ease);
+}
+
+.nominal {
+  fill: var(--amber);
+  filter: drop-shadow(0 0 4px var(--amber));
+}
+
+.tripped {
+  fill: var(--crimson);
+  filter: drop-shadow(0 0 4px var(--crimson));
+}
+
+.off {
+  fill: #3a3f48;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nominal {
+    animation: breathe 4s ease-in-out infinite;
+  }
+}
+
+@keyframes breathe {
+  50% {
+    opacity: 0.45;
+  }
+}
